@@ -1,0 +1,23 @@
+server:
+  port: 10086
+spring:
+  application:
+    name: user-service
+  rabbitmq:
+    host: 116.62.125.141
+    username: secondhand
+    password: secondhand
+    virtual-host: /
+  redis:
+    host: 116.62.125.141
+    password: asd334467
+  datasource:
+    url: jdbc:mysql:///campususeddeals?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8080/eureka
+mybatis:
+  type-aliases-package: com.secondhand.pojo.User

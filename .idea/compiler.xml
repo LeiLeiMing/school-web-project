@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="secondhand-user-interface" />
+        <module name="secondhand-regsiter" />
+        <module name="secondhand-sms" />
+        <module name="secondhand-geteway" />
+        <module name="secondhand-auth-common" />
+        <module name="secondhand-project-service" />
+        <module name="secondhand-user-common" />
+        <module name="secondhand-interface" />
+        <module name="secondhand-user-service" />
+        <module name="secondhand-auth-service" />
+        <module name="secondhand-project-interface" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="secondhand" options="-parameters" />
+      <module name="secondhand-auth" options="-parameters" />
+      <module name="secondhand-auth-common" options="-parameters" />
+      <module name="secondhand-auth-service" options="-parameters" />
+      <module name="secondhand-geteway" options="-parameters" />
+      <module name="secondhand-interface" options="-parameters" />
+      <module name="secondhand-project" options="-parameters" />
+      <module name="secondhand-project-interface" options="-parameters" />
+      <module name="secondhand-project-service" options="-parameters" />
+      <module name="secondhand-regsiter" options="-parameters" />
+      <module name="secondhand-sms" options="-parameters" />
+      <module name="secondhand-user-common" options="-parameters" />
+      <module name="secondhand-user-interface" options="-parameters" />
+      <module name="secondhand-user-service" options="-parameters" />
+    </option>
+  </component>
+</project>

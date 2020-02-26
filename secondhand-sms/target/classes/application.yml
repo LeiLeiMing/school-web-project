@@ -1,0 +1,14 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: sms-service
+  rabbitmq:
+    host: 116.62.125.141
+    username: secondhand
+    password: secondhand
+    virtual-host: /
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8080/eureka

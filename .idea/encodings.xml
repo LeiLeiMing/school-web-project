@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-auth" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-auth/secondhand-auth-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-auth/secondhand-auth-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-auth/secondhand-interface" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-geteway" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-project" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-project/secondhand-project-interface" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-project/secondhand-project-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-regsiter" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-sms" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-user" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-user/secondhand-user-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-user/secondhand-user-interface" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/secondhand-user/secondhand-user-service" charset="UTF-8" />
+  </component>
+</project>

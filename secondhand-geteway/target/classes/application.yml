@@ -1,0 +1,16 @@
+server:
+  port: 1000
+spring:
+  application:
+    name: secondhand-geteway
+zuul:
+  routes:
+    project-service: /project-service/**  #project-service前后名称一致
+    user-service: /user-service/**
+    auth-service: /auth-service/**
+  add-host-header: true #允许Cookie跨服务器
+  sensitive-headers: #覆盖原有配置，使得网关可以携带Cookie信息
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8080/eureka

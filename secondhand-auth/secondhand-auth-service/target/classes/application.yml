@@ -1,0 +1,14 @@
+server:
+  port: 7000
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:mysql:///campususeddeals?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8080/eureka
+

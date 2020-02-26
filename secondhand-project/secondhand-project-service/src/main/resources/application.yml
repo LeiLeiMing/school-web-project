@@ -1,0 +1,21 @@
+server:
+  port: 9090
+  #tomcat:
+  #max-http-post-size: -1
+  max-http-header-size: 4048576
+  servlet:
+    multipart:
+      max-file-size: 5MB
+spring:
+  application:
+    name: project-service
+  datasource:
+    url: jdbc:mysql:///campususeddeals?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8080/eureka
+mybatis:
+  type-aliases-package: com.secondhand.project.pojo
