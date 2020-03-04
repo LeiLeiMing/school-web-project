@@ -15,6 +15,9 @@
         <module>secondhand-sms</module>
         <module>secondhand-user</module>
         <module>secondhand-auth</module>
+        <module>secondhand-transaction</module>
+        <module>secondhand-transaction</module>
+        <module>secondhand-transaction</module>
     </modules>
 
     <parent>

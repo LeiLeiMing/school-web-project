@@ -31,4 +31,5 @@ public class GetWayCros {
         /*将改写后的配置写入到请求中带到服务器*/
         return new CorsFilter(urlBasedCorsConfigurationSource);
     }
+
 }

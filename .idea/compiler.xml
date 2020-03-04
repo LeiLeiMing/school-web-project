@@ -13,12 +13,17 @@
         <module name="secondhand-auth-common" />
         <module name="secondhand-project-service" />
         <module name="secondhand-user-common" />
+        <module name="secondhand-transaction-service" />
+        <module name="secondhand-project-interface" />
         <module name="secondhand-interface" />
         <module name="secondhand-user-service" />
         <module name="secondhand-auth-service" />
-        <module name="secondhand-project-interface" />
+        <module name="secondhand-transaction-interface" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="secondhand-transaction" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -33,6 +38,9 @@
       <module name="secondhand-project-service" options="-parameters" />
       <module name="secondhand-regsiter" options="-parameters" />
       <module name="secondhand-sms" options="-parameters" />
+      <module name="secondhand-transaction" options="-parameters" />
+      <module name="secondhand-transaction-interface" options="-parameters" />
+      <module name="secondhand-transaction-service" options="-parameters" />
       <module name="secondhand-user-common" options="-parameters" />
       <module name="secondhand-user-interface" options="-parameters" />
       <module name="secondhand-user-service" options="-parameters" />

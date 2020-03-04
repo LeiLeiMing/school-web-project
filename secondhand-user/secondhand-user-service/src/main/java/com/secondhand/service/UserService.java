@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -89,5 +91,13 @@ public class UserService {
             return user;
         }
         return null;
+    }
+
+    public List<Users> findUsrById(String id) {
+        Example example = new Example(Users.class);
+        example.createCriteria()
+                .andEqualTo("id",id);
+        return userMapper.selectByExample(example);
+
     }
 }

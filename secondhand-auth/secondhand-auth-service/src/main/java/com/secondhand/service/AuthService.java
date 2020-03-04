@@ -22,8 +22,10 @@ public class AuthService extends KeyUrl {
 
     @Autowired
     private UserClient userClient;
+
     //公钥
     private PublicKey publicKey;
+
     //私钥
     private PrivateKey privateKey;
 
@@ -36,7 +38,7 @@ public class AuthService extends KeyUrl {
      */
     public String userauth(String phone,String password) throws Exception {
         //查询该用户
-        Users user = new Users();
+        Users user;
         try{
             user = userClient.query(phone, password);
         }catch (Exception e){
@@ -51,11 +53,13 @@ public class AuthService extends KeyUrl {
         userInfo.setAge(user.getAge());
         userInfo.setName(user.getName());
         userInfo.setUserhead(user.getUserhead());
+
         //获取私钥
         this.privateKey = RsaUtils.getPrivateKey(PRIKRY_PATH);
+
         //生成Token
         try {
-           return JwtUtils.generateToken(userInfo,privateKey, 5);
+           return JwtUtils.generateToken(userInfo,privateKey,30);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,7 +81,7 @@ public class AuthService extends KeyUrl {
     public String newToken(UserInfo userInfo) throws Exception {
         //获取新的token
         this.privateKey = RsaUtils.getPrivateKey(PRIKRY_PATH);
-        String newtoken = JwtUtils.generateToken(userInfo, privateKey, 5);
+        String newtoken = JwtUtils.generateToken(userInfo, privateKey, 30);
         return newtoken;
     }
 }

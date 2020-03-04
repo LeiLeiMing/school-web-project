@@ -1,0 +1,12 @@
+server:
+  port: 6060
+spring:
+  application:
+    name: transaction-service
+  redis:
+    host: 116.62.125.141
+    password: asd334467
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8080/eureka

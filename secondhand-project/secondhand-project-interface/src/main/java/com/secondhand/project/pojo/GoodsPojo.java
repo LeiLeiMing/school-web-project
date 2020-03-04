@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,6 +31,36 @@ public class GoodsPojo {
     private Integer nogotable;//是否可议价
     private Integer baoyou;//是否包邮
     private String goodsdesc;//商品描述
+    private Integer clickmount; //商品点击次数
+
+    private ImagePojo imageaddress;  //用来展示的图片地址，只有一张，goodsid和该商品一致，首页图片状态为1
+
+    private List<ImagePojo> allimageaddress; //该商品下的的全部图片
+
+
+    public Integer getClickmount() {
+        return clickmount;
+    }
+
+    public void setClickmount(Integer clickmount) {
+        this.clickmount = clickmount;
+    }
+
+    public List<ImagePojo> getAllimageaddress() {
+        return allimageaddress;
+    }
+
+    public void setAllimageaddress(List<ImagePojo> allimageaddress) {
+        this.allimageaddress = allimageaddress;
+    }
+
+    public ImagePojo getImageaddress() {
+        return imageaddress;
+    }
+
+    public void setImageaddress(ImagePojo imageaddress) {
+        this.imageaddress = imageaddress;
+    }
 
     public String getGoodsdesc() {
         return goodsdesc;
