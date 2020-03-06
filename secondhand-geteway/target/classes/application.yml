@@ -18,3 +18,11 @@ eureka:
 ribbon:
   eureka:
     enabled: true
+#配置服务连接超时时间，解决登录时要点多次的问题
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

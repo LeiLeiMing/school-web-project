@@ -1,8 +1,7 @@
 package com.secondhand.client;
 
-import com.secondhand.pojo.Users;
+import com.secondhand.Users;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

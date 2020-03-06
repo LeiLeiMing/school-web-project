@@ -1,4 +1,4 @@
-package com.secondhand.pojo;
+package com.secondhand;
 
 /**
  * 用户id和phone的Pojo

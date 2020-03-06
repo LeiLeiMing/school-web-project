@@ -1,8 +1,7 @@
 package com.secondhand.controller;
 
-import com.secondhand.pojo.Users;
+import com.secondhand.Users;
 import com.secondhand.service.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

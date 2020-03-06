@@ -1,6 +1,6 @@
 package com.secondhand.test;
 
-import com.secondhand.pojo.UserInfo;
+import com.secondhand.UserInfo;
 import com.secondhand.utils.JwtUtils;
 import com.secondhand.utils.RsaUtils;
 import org.junit.Before;

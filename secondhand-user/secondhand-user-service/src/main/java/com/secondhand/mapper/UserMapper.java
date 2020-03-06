@@ -1,6 +1,6 @@
 package com.secondhand.mapper;
 
-import com.secondhand.pojo.Users;
+import com.secondhand.Users;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

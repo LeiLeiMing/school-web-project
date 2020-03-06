@@ -6,7 +6,13 @@ spring:
   redis:
     host: 116.62.125.141
     password: asd334467
+  datasource:
+    url: jdbc:mysql:///campususeddeals?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
 eureka:
   client:
     service-url:
       defaultZone:  http://localhost:8080/eureka
+mybatis:
+  type-aliases-package: com.secondhand.pojo.OrderPojo

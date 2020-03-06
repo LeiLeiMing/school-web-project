@@ -1,4 +1,4 @@
-package com.secondhand.pojo;
+package com.secondhand;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

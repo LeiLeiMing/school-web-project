@@ -1,12 +1,9 @@
 package com.secondhand.controller;
 
-import com.secondhand.pojo.UserInfo;
+import com.secondhand.UserInfo;
 import com.secondhand.service.AuthService;
-import com.secondhand.utils.CookieUtils;
 import com.secondhand.utils.KeyUrl;
 import com.secondhand.utils.RsaUtils;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

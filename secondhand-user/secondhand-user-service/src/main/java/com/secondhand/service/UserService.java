@@ -2,12 +2,11 @@ package com.secondhand.service;
 
 import com.secondhand.common.CodeUtils;
 import com.secondhand.mapper.UserMapper;
-import com.secondhand.pojo.Users;
+import com.secondhand.Users;
 import com.secondhand.saltutils.CodeSalt;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;

@@ -2,7 +2,6 @@ package com.secondhand.controller;
 
 import com.secondhand.client.AuthClient;
 import com.secondhand.common.CodeUtils;
-import com.secondhand.pojo.Users;
 import com.secondhand.project.pojo.GoodsPojo;
 import com.secondhand.project.pojo.ImagePojo;
 import com.secondhand.service.GoodsClickService;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

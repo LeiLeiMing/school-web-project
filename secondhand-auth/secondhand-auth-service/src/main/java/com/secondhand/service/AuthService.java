@@ -1,13 +1,12 @@
 package com.secondhand.service;
 
 import com.secondhand.client.UserClient;
-import com.secondhand.pojo.UserInfo;
-import com.secondhand.pojo.Users;
+import com.secondhand.UserInfo;
+import com.secondhand.Users;
 import com.secondhand.utils.JwtUtils;
 import com.secondhand.utils.KeyUrl;
 import com.secondhand.utils.RsaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;

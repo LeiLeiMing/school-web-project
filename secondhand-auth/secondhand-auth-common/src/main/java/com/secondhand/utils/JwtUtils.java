@@ -1,6 +1,6 @@
 package com.secondhand.utils;
 
-import com.secondhand.pojo.UserInfo;
+import com.secondhand.UserInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
