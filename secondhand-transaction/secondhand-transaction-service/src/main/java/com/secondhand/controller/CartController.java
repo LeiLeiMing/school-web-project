@@ -79,7 +79,7 @@ public class CartController {
      */
     @PostMapping("deletegoods")
     public ResponseEntity<Void> deletecartgoods(@RequestBody JSONObject[] jsonParam,@RequestParam("token")String token){
-        //get redis data
+        //get redis data /
         //String cartGoods = cartService.getCartGooods(token);
         List cartlist = new ArrayList<String>();
         for (int i =0;i<jsonParam.length;i++){
