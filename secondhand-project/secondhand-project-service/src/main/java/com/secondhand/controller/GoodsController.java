@@ -4,6 +4,7 @@ import com.secondhand.client.AuthClient;
 import com.secondhand.common.CodeUtils;
 import com.secondhand.project.pojo.GoodsPojo;
 import com.secondhand.project.pojo.ImagePojo;
+import com.secondhand.project.pojo.UserAddressPojo;
 import com.secondhand.service.GoodsClickService;
 import com.secondhand.service.GoodsService;
 import org.apache.commons.lang.StringUtils;
@@ -121,4 +122,65 @@ public class GoodsController {
         return ResponseEntity.ok(hotSellGoods);
     }
 
+    /**
+     * 根据序列获取商品列商品
+     * @return
+     */
+    @GetMapping("getgoodslimit")
+    public ResponseEntity<List<GoodsPojo>> getgoodslimit(@RequestParam("startpage")Integer startpage,@RequestParam("endpage")Integer endpage){
+        //1-1*5 1*5-5*2
+        List<GoodsPojo> goods = goodsService.getgoodsLimit(startpage, endpage);
+        return ResponseEntity.ok(goods);
+    }
+
+    /**
+     * 获取全部商品总数
+     * @return
+     */
+    @GetMapping("getgoodsmount")
+    public ResponseEntity<Integer> getgoodsmount(){
+        return ResponseEntity.ok(this.goodsService.getgoodsmount());
+    }
+
+    /**
+     * 保存收货地址
+     * @param token
+     * @param selectid
+     * @param username
+     * @param usertel
+     * @param useraddress
+     * @param userdateliaddress
+     * @return
+     */
+    @PostMapping("saveaddress")
+    public ResponseEntity<Void> saveaddress(
+            @RequestParam("token")String token,
+            @RequestParam("selectid")String selectid,
+            @RequestParam("username")String username,
+            @RequestParam("usertel")String usertel,
+            @RequestParam("useraddress")String useraddress,
+            @RequestParam("userdateliaddress")String userdateliaddress){
+        UserAddressPojo useradddress = new UserAddressPojo();
+        useradddress.setSelectid(selectid);
+        useradddress.setUsername(username);
+        useradddress.setUsertel(usertel);
+        useradddress.setUseraddress(useraddress);
+        useradddress.setUserdateliaddress(userdateliaddress);
+        if(!this.goodsService.saveAddress(useradddress, token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("getaddress")
+    public ResponseEntity<List<UserAddressPojo>> getaddress( @RequestParam("token")String token){
+        Map userInfo = this.authClient.getUserInfo(token);
+        if (userInfo.isEmpty()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        List<UserAddressPojo> address = this.goodsService.getaddressbyid(id);
+        return ResponseEntity.ok(address);
+    }
 }

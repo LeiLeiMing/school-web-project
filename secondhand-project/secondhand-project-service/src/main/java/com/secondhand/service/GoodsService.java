@@ -1,10 +1,13 @@
 package com.secondhand.service;
 
+import com.secondhand.Users;
 import com.secondhand.client.AuthClient;
+import com.secondhand.mapper.AddressMapper;
 import com.secondhand.mapper.GoodsMapper;
 import com.secondhand.mapper.ImageMapper;
 import com.secondhand.project.pojo.GoodsPojo;
 import com.secondhand.project.pojo.ImagePojo;
+import com.secondhand.project.pojo.UserAddressPojo;
 import com.secondhand.project.utils.UploadToOssUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +38,9 @@ public class GoodsService {
 
     @Autowired
     private ImageMapper imageMapper;
+
+    @Autowired
+    private AddressMapper addressMapper;
 
 
 
@@ -161,7 +167,57 @@ public class GoodsService {
         return goodsMapper.findNewSellGoods();
     }
 
+    /**
+     * 热销商品
+     * @return
+     */
     public List<GoodsPojo> findHotSellGoods() {
         return goodsMapper.findHotSellGoods();
+    }
+
+    /**
+     * 分页查询
+     * @param startpage
+     * @param endpage
+     * @return
+     */
+    public List<GoodsPojo> getgoodsLimit(Integer startpage, Integer endpage) {
+        return this.goodsMapper.getGoodsLimit(startpage,endpage);
+    }
+
+    /**
+     * 查询商品总数
+     * @return
+     */
+    public Integer getgoodsmount() {
+        return this.goodsMapper.getgoodsmount();
+    }
+
+    /**
+     * 保持收货地址
+     * @param address
+     * @param token
+     * @return
+     */
+    public boolean saveAddress(UserAddressPojo address, String token) {
+        Map userInfo = this.authClient.getUserInfo(token);
+        if (userInfo.isEmpty()){
+            return false;
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        address.setUserid(id);
+        int i = this.addressMapper.insert(address);
+        if (i==0){
+            return false;
+        }
+        return true;
+    }
+
+    public List<UserAddressPojo> getaddressbyid(String id) {
+        Example example = new Example(UserAddressPojo.class);
+        example.createCriteria()
+                .andEqualTo("userid",id);
+        return this.addressMapper.selectByExample(example);
     }
 }
