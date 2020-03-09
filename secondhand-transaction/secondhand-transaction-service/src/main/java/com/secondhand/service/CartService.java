@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -82,7 +83,7 @@ public class CartService {
         //设置订单状态 0:待支付 1：已支付 2：未发货 3：已发货
         order.setOrderstatus(0);
         //设置订单收货地址,将根据用户id从数据库获取详细地址 的 ID 并存进数据库
-        order.setOrderaddress("广西");
+        order.setOrderaddress(order.getOrderaddress());
         this.cartMapper.saveGoodsOrder(id,order);
         return false;
     }
@@ -102,5 +103,25 @@ public class CartService {
         //save redis
         this.redisTemplate.opsForValue().set(KEY_PREFIX+id,cartlist.toString());
         return true;
+    }
+
+    public List<OrderPojo> getorderbyid(String orderid) {
+        Example example = new Example(OrderPojo.class);
+        example.createCriteria()
+                .andEqualTo("orderid",orderid);
+        List<OrderPojo> orders = this.cartMapper.selectByExample(example);
+        return orders;
+    }
+
+    public void changeOrderStatu(String orderid) {
+        this.cartMapper.changeOrderStatus(orderid);
+    }
+
+    public List<OrderPojo> getUserIdByOrder(String orderid) {
+        return this.cartMapper.getUserByOrder(orderid);
+    }
+
+    public void clearCartGoods(String id) {
+        this.redisTemplate.delete(KEY_PREFIX+id);
     }
 }

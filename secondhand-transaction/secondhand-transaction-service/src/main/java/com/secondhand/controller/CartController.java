@@ -1,6 +1,7 @@
 package com.secondhand.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.secondhand.pojo.OrderPojo;
 import com.secondhand.service.CartService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +69,7 @@ public class CartController {
     @PostMapping("generateorder")
     public ResponseEntity<Void> generateorder(@RequestParam("token")String token, OrderPojo oreder){
         //将订单循环插入数据库
-        //this.cartService.saveGoodsOrder(token,oreder);
+        this.cartService.saveGoodsOrder(token,oreder);
         return ResponseEntity.ok(null);
     }
 
@@ -87,6 +89,27 @@ public class CartController {
         }
         this.cartService.deleteCartGoods(token,cartlist);
         return ResponseEntity.ok(null);
+    }
+
+    /**
+     * 接收支付结果
+     * @param request
+     * @return
+     */
+    @GetMapping("/getalipay")
+    public String getalipay(HttpServletRequest request){
+        Map<String,String[]> map = request.getParameterMap();
+        String[] orderinfo = map.get("out_trade_no");
+        String orderid = orderinfo[0];
+        //将该订单的状态改为已支付状态
+        this.cartService.changeOrderStatu(orderid);
+        //清空购物车
+        //获取订单对应下的用户
+        List<OrderPojo> order = this.cartService.getUserIdByOrder(orderid);
+        String id = order.get(0).getBuyerid();
+        //清空该用户的购物车
+        this.cartService.clearCartGoods(id);
+        return  "redirect:http://localhost:3000/#/paysuccess";
     }
 
 }

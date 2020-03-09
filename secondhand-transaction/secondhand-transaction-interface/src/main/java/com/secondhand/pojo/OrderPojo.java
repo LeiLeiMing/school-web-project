@@ -11,7 +11,7 @@ import java.util.Date;
  * 订单pojo
  * Created by LeiMing on 2020/3/5 11:20
  */
-@Table
+@Table(name = "goodsorder")
 public class OrderPojo {
 
     @Id
