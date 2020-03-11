@@ -24,4 +24,7 @@ public interface CartMapper extends Mapper<OrderPojo> {
 
     @Select("select * from goodSorder where orderid = #{orderid} ")
     List<OrderPojo> getUserByOrder(String orderid);
+
+    @Select("select DISTINCT sellerid from goodsorder where orderid = #{orderid}")
+    List<String> getSelleByOrderid(String orderid);
 }

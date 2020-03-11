@@ -1,21 +1,19 @@
 package com.secondhand.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.secondhand.pojo.MessagePojo;
 import com.secondhand.pojo.OrderPojo;
 import com.secondhand.service.CartService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,9 +52,6 @@ public class CartController {
     @GetMapping("getcart")
     public ResponseEntity<String> getcartgoods(@RequestParam("token")String token){
         String cartGoods = cartService.getCartGooods(token);
-        if (StringUtils.isBlank(cartGoods)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
         return ResponseEntity.ok(cartGoods);
     }
 
@@ -81,8 +76,6 @@ public class CartController {
      */
     @PostMapping("deletegoods")
     public ResponseEntity<Void> deletecartgoods(@RequestBody JSONObject[] jsonParam,@RequestParam("token")String token){
-        //get redis data /
-        //String cartGoods = cartService.getCartGooods(token);
         List cartlist = new ArrayList<String>();
         for (int i =0;i<jsonParam.length;i++){
             cartlist.add(jsonParam[i].toJSONString());
@@ -92,23 +85,57 @@ public class CartController {
     }
 
     /**
+     * 获取消息
+     * @param token
+     * @return
+     */
+    @GetMapping("getmessage")
+    public ResponseEntity<List<MessagePojo>> getUserMessage(@RequestParam("token")String token){
+        List<MessagePojo> userMessage = this.cartService.getUserMessage(token);
+        return ResponseEntity.ok(userMessage);
+    }
+
+    @GetMapping("getmessagemount")
+    public ResponseEntity<Integer> getMessageMount(@RequestParam("token")String token){
+        Integer mount = this.cartService.getMessageMount(token);
+        return ResponseEntity.ok(mount);
+    }
+
+    /**
+     * 修改消息已读状态
+     * @param messageid
+     * @return
+     */
+    @GetMapping("changemessagestatus")
+    public ResponseEntity<Void> changemessagestatus(@RequestParam("messageid")String messageid){
+        this.cartService.changrMessageStatus(messageid);
+        return ResponseEntity.ok(null);
+    }
+
+
+    /**
      * 接收支付结果
      * @param request
      * @return
      */
     @GetMapping("/getalipay")
-    public String getalipay(HttpServletRequest request){
+    public String getalipay(HttpServletRequest request) throws ParseException {
         Map<String,String[]> map = request.getParameterMap();
         String[] orderinfo = map.get("out_trade_no");
         String orderid = orderinfo[0];
         //将该订单的状态改为已支付状态
         this.cartService.changeOrderStatu(orderid);
-        //清空购物车
-        //获取订单对应下的用户
+        //获取该用户id
         List<OrderPojo> order = this.cartService.getUserIdByOrder(orderid);
         String id = order.get(0).getBuyerid();
         //清空该用户的购物车
         this.cartService.clearCartGoods(id);
+        //获取该订单的出售者id
+        List<String> sellerids = this.cartService.getSellerByOrderid(orderid);
+        //将订单消息存入数据库通知卖家
+        for (int i = 0;i<sellerids.size();i++){
+            this.cartService.addMessage(sellerids.get(i),orderid);
+        }
         return  "redirect:http://localhost:3000/#/paysuccess";
     }
 

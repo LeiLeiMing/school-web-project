@@ -2,6 +2,8 @@ package com.secondhand.service;
 
 import com.secondhand.client.CartClient;
 import com.secondhand.mapper.CartMapper;
+import com.secondhand.mapper.MessageMapper;
+import com.secondhand.pojo.MessagePojo;
 import com.secondhand.pojo.OrderPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -9,6 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.jws.Oneway;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +38,9 @@ public class CartService {
 
     @Autowired
     private CartClient cartClient;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     /**
      * 保存购物车至redis
@@ -123,5 +133,52 @@ public class CartService {
 
     public void clearCartGoods(String id) {
         this.redisTemplate.delete(KEY_PREFIX+id);
+    }
+
+    public List<String> getSellerByOrderid(String orderid) {
+        return this.cartMapper.getSelleByOrderid(orderid);
+    }
+
+    public void addMessage(String sellerid,String orderid) throws ParseException {
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String date = format1.format(new Date());
+        MessagePojo message = new MessagePojo();
+        message.setUserid(sellerid);
+        message.setMessage("你收到新的订单，点击查看");
+        message.setTime(date);
+        message.setStatus(0);
+        message.setType(0);
+        message.setOrderid(orderid);
+        this.messageMapper.insert(message);
+    }
+
+    public List<MessagePojo> getUserMessage(String token) {
+        Map userInfo = this.cartClient.getUserInfo(token);
+        if (userInfo.isEmpty()){
+            return null;
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        //根据id获取
+        Example example = new Example(MessagePojo.class);
+        example.createCriteria()
+                .andEqualTo("userid",id);
+        List<MessagePojo> message = this.messageMapper.selectByExample(example);
+        return message;
+    }
+
+    public void changrMessageStatus(String messageid) {
+        this.messageMapper.changeMessageStatus(messageid);
+    }
+
+    public Integer getMessageMount(String token) {
+        Map userInfo = this.cartClient.getUserInfo(token);
+        if (userInfo.isEmpty()){
+            return null;
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        Integer mount = this.messageMapper.getMessageMount(id);
+        return mount;
     }
 }

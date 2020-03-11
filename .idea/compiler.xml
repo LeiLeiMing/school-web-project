@@ -6,19 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="secondhand-user-common" />
+        <module name="secondhand-user-interface" />
         <module name="secondhand-regsiter" />
-        <module name="secondhand-transaction-interface" />
+        <module name="secondhand-sms" />
         <module name="secondhand-geteway" />
         <module name="secondhand-auth-common" />
         <module name="secondhand-project-service" />
-        <module name="secondhand-user-interface" />
+        <module name="secondhand-user-common" />
         <module name="secondhand-transaction-service" />
         <module name="secondhand-project-interface" />
         <module name="secondhand-interface" />
         <module name="secondhand-user-service" />
         <module name="secondhand-auth-service" />
-        <module name="secondhand-sms" />
+        <module name="secondhand-transaction-interface" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

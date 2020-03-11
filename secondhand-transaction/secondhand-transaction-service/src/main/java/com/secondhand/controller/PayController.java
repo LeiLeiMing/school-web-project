@@ -4,19 +4,15 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.secondhand.pojo.OrderPojo;
-import com.secondhand.pojo.utils.AlipayConfig;
+import com.secondhand.utils.AlipayConfig;
 import com.secondhand.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by LeiMing on 2020/3/9 11:04

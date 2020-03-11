@@ -1,4 +1,4 @@
-package com.secondhand.pojo.utils;
+package com.secondhand.utils;
 import java.io.FileWriter;
 import java.io.IOException;
 

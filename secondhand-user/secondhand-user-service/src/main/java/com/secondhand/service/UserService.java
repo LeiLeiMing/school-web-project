@@ -49,6 +49,7 @@ public class UserService {
         Map<String,String> map = new HashMap<String,String>();
         map.put("phone",phone);
         map.put("code",code);
+        //将消息队列插入rabbitmq
         this.amqpTemplate.convertAndSend("secondhand.sms.exchange","phoneCode",map);
         //将核对验证码存进redis
         this.redisTemplate.opsForValue().set(KEY_PREFIX+phone,code,1, TimeUnit.MINUTES);
