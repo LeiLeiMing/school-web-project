@@ -172,6 +172,11 @@ public class GoodsController {
         return ResponseEntity.ok(null);
     }
 
+    /**
+     * 获取收货地址
+     * @param token
+     * @return
+     */
     @GetMapping("getaddress")
     public ResponseEntity<List<UserAddressPojo>> getaddress( @RequestParam("token")String token){
         Map userInfo = this.authClient.getUserInfo(token);
@@ -182,5 +187,11 @@ public class GoodsController {
         String id = userinfo.get("id").toString();
         List<UserAddressPojo> address = this.goodsService.getaddressbyid(id);
         return ResponseEntity.ok(address);
+    }
+
+    @GetMapping("changegoodsstatus")
+    public ResponseEntity<Void> changeGoodsStatus(@RequestParam("status")Integer status, @RequestParam("goodsid")String goodsid){
+        this.goodsService.changeGoodsStatus(status,goodsid);
+        return ResponseEntity.ok(null);
     }
 }

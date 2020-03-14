@@ -1,6 +1,7 @@
 package com.secondhand.service;
 
 import com.secondhand.client.CartClient;
+import com.secondhand.client.GoodsClient;
 import com.secondhand.mapper.CartMapper;
 import com.secondhand.mapper.MessageMapper;
 import com.secondhand.pojo.MessagePojo;
@@ -11,10 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.jws.Oneway;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class CartService {
+public class TransactionService {
     //存进redis的数据前缀
     private static final String KEY_PREFIX = "user:cart:";
 
@@ -38,6 +37,9 @@ public class CartService {
 
     @Autowired
     private CartClient cartClient;
+
+    @Autowired
+    private GoodsClient goodsClient;
 
     @Autowired
     private MessageMapper messageMapper;
@@ -180,5 +182,21 @@ public class CartService {
         String id = userinfo.get("id").toString();
         Integer mount = this.messageMapper.getMessageMount(id);
         return mount;
+    }
+
+    public void changeGoodsStatus(Integer status,String goodsid) {
+        this.goodsClient.changeGoodsStatus(status,goodsid);
+    }
+
+    public List<OrderPojo> getToBeshippedOrder(String token) {
+        Map userInfo = this.cartClient.getUserInfo(token);
+        if (userInfo.isEmpty()){
+            return null;
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        //查询
+        List<OrderPojo> orders = this.cartMapper.getToBeshippedOrder(id);
+        return orders;
     }
 }

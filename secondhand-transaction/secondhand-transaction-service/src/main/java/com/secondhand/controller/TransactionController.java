@@ -3,16 +3,14 @@ package com.secondhand.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.secondhand.pojo.MessagePojo;
 import com.secondhand.pojo.OrderPojo;
-import com.secondhand.service.CartService;
+import com.secondhand.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +20,10 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("cart")
-public class CartController {
+public class TransactionController {
 
     @Autowired
-    private CartService cartService;
+    private TransactionService transactionService;
 
     /**
      * 将当前用户下的购物车数据存进redis
@@ -40,7 +38,7 @@ public class CartController {
             cartlist.add(jsonParam[i].toJSONString());
         }
         //将数据存进redis token将用于获取用户id作为redis的key
-        this.cartService.saveCartGoods(token,cartlist);
+        this.transactionService.saveCartGoods(token,cartlist);
         return ResponseEntity.ok(null);
     }
 
@@ -51,7 +49,7 @@ public class CartController {
      */
     @GetMapping("getcart")
     public ResponseEntity<String> getcartgoods(@RequestParam("token")String token){
-        String cartGoods = cartService.getCartGooods(token);
+        String cartGoods = transactionService.getCartGooods(token);
         return ResponseEntity.ok(cartGoods);
     }
 
@@ -64,8 +62,14 @@ public class CartController {
     @PostMapping("generateorder")
     public ResponseEntity<Void> generateorder(@RequestParam("token")String token, OrderPojo oreder){
         //将订单循环插入数据库
-        this.cartService.saveGoodsOrder(token,oreder);
+        this.transactionService.saveGoodsOrder(token,oreder);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("getshippedorder")
+    public ResponseEntity<List<OrderPojo>> getToBeshippedOrder(@RequestParam("token")String token){
+        List<OrderPojo> toBeshippedOrder = this.transactionService.getToBeshippedOrder(token);
+        return ResponseEntity.ok(toBeshippedOrder);
     }
 
     /**
@@ -80,7 +84,7 @@ public class CartController {
         for (int i =0;i<jsonParam.length;i++){
             cartlist.add(jsonParam[i].toJSONString());
         }
-        this.cartService.deleteCartGoods(token,cartlist);
+        this.transactionService.deleteCartGoods(token,cartlist);
         return ResponseEntity.ok(null);
     }
 
@@ -91,13 +95,18 @@ public class CartController {
      */
     @GetMapping("getmessage")
     public ResponseEntity<List<MessagePojo>> getUserMessage(@RequestParam("token")String token){
-        List<MessagePojo> userMessage = this.cartService.getUserMessage(token);
+        List<MessagePojo> userMessage = this.transactionService.getUserMessage(token);
         return ResponseEntity.ok(userMessage);
     }
 
+    /**
+     * 获取未读消息数量
+     * @param token
+     * @return
+     */
     @GetMapping("getmessagemount")
     public ResponseEntity<Integer> getMessageMount(@RequestParam("token")String token){
-        Integer mount = this.cartService.getMessageMount(token);
+        Integer mount = this.transactionService.getMessageMount(token);
         return ResponseEntity.ok(mount);
     }
 
@@ -108,7 +117,7 @@ public class CartController {
      */
     @GetMapping("changemessagestatus")
     public ResponseEntity<Void> changemessagestatus(@RequestParam("messageid")String messageid){
-        this.cartService.changrMessageStatus(messageid);
+        this.transactionService.changrMessageStatus(messageid);
         return ResponseEntity.ok(null);
     }
 
@@ -124,17 +133,22 @@ public class CartController {
         String[] orderinfo = map.get("out_trade_no");
         String orderid = orderinfo[0];
         //将该订单的状态改为已支付状态
-        this.cartService.changeOrderStatu(orderid);
+        this.transactionService.changeOrderStatu(orderid);
         //获取该用户id
-        List<OrderPojo> order = this.cartService.getUserIdByOrder(orderid);
+        List<OrderPojo> order = this.transactionService.getUserIdByOrder(orderid);
         String id = order.get(0).getBuyerid();
+        //获取商品编号 并根据商品编号修改商品状态
+        for (int i = 0;i<order.size();i++){
+            String goodsid = order.get(i).getGoodsid();
+            this.transactionService.changeGoodsStatus(2,goodsid);
+        }
         //清空该用户的购物车
-        this.cartService.clearCartGoods(id);
+        this.transactionService.clearCartGoods(id);
         //获取该订单的出售者id
-        List<String> sellerids = this.cartService.getSellerByOrderid(orderid);
+        List<String> sellerids = this.transactionService.getSellerByOrderid(orderid);
         //将订单消息存入数据库通知卖家
         for (int i = 0;i<sellerids.size();i++){
-            this.cartService.addMessage(sellerids.get(i),orderid);
+            this.transactionService.addMessage(sellerids.get(i),orderid);
         }
         return  "redirect:http://localhost:3000/#/paysuccess";
     }

@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface GoodsMapper extends Mapper<GoodsPojo> {
 
-    //查询该用户下已上架的商品
-    @Select("select * from commodity where userid = #{id} and takesstatus = 1")
+    //查询该用户下上架的商品
+    @Select("select * from commodity where userid = #{id}")
     @Results(id = "goodsforuser", value = {
             @Result(id = true,property = "id",column = "id"),
             @Result(property = "userid",column = "userid"),
@@ -130,4 +130,7 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
 
     @Select("select count(*) from commodity")
     Integer getgoodsmount();
+
+    @Update("update commodity set takesstatus = #{status} where sellgoodsid = #{goodsid}")
+    void changeGoodsStatus(Integer status,String goodsid);
 }

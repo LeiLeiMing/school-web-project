@@ -66,7 +66,7 @@ public class GoodsService {
         if(userinfomap == null){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        //设置商品的卖还是买标识 1是卖0是买
+        //设置商品状态 0是下架 1是上架中 2是被下单  3是已售出
         goods.setTakesstatus(1);
         //设置用户id
         goods.setUserid(userinfo.get("id").toString());
@@ -219,5 +219,9 @@ public class GoodsService {
         example.createCriteria()
                 .andEqualTo("userid",id);
         return this.addressMapper.selectByExample(example);
+    }
+
+    public void changeGoodsStatus(Integer status,String goodsid) {
+        this.goodsMapper.changeGoodsStatus(status,goodsid);
     }
 }

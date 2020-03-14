@@ -1,5 +1,7 @@
 package com.secondhand.pojo;
 
+import com.secondhand.project.pojo.GoodsPojo;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,6 +41,17 @@ public class OrderPojo {
     private Date orderendtime;
 
     private String orderaddress;
+
+
+    private GoodsPojo goodsPojo;
+
+    public GoodsPojo getGoodsPojo() {
+        return goodsPojo;
+    }
+
+    public void setGoodsPojo(GoodsPojo goodsPojo) {
+        this.goodsPojo = goodsPojo;
+    }
 
     public Integer getId() {
         return id;

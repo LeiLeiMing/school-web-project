@@ -5,7 +5,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.secondhand.utils.AlipayConfig;
-import com.secondhand.service.CartService;
+import com.secondhand.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 支付宝支付接口
  * Created by LeiMing on 2020/3/9 11:04
  */
 @Controller
 @RequestMapping("alipay")
 public class PayController {
     @Autowired
-    private CartService cartService;
+    private TransactionService transactionService;
 
     @RequestMapping("/pay")
     public void payController(HttpServletRequest request, HttpServletResponse response) throws IOException {

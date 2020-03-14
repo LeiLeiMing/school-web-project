@@ -1,9 +1,8 @@
 package com.secondhand.mapper;
 
 import com.secondhand.pojo.OrderPojo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -27,4 +26,23 @@ public interface CartMapper extends Mapper<OrderPojo> {
 
     @Select("select DISTINCT sellerid from goodsorder where orderid = #{orderid}")
     List<String> getSelleByOrderid(String orderid);
+
+    @Select("select * from goodsorder where orderstatus =1 and sellerid = #{id}")
+    @Results(id = "tobeshippedOrder", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "orderid",column = "orderid"),
+            @Result(property = "buyerid",column = "buyerid"),
+            @Result(property = "sellerid",column = "sellerid"),
+            @Result(property = "goodsid",column = "goodsid"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "allprice",column = "allprice"),
+            @Result(property = "orderstatus",column = "orderstatus"),
+            @Result(property = "ordertime",column = "ordertime"),
+            @Result(property = "orderleavemessage",column = "orderleavemessage"),
+            @Result(property = "orderendtime",column = "orderendtime"),
+            @Result(property = "orderaddress",column = "orderaddress"),
+            @Result(property = "goodsPojo",column = "goodsid",
+                    one = @One(select = "com.secondhand.mapper.GoodsMapper.getGoodsByGoodsid",fetchType = FetchType.DEFAULT)),
+    })
+    List<OrderPojo> getToBeshippedOrder(String id);
 }
