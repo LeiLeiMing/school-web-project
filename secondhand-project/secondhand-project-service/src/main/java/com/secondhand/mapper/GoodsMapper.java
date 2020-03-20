@@ -133,4 +133,25 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
 
     @Update("update commodity set takesstatus = #{status} where sellgoodsid = #{goodsid}")
     void changeGoodsStatus(Integer status,String goodsid);
+
+    @Select("select * from commodity where goodstype = #{type}")
+    @Results(id = "studygoods", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "userid",column = "userid"),
+            @Result(property = "sellgoodsid",column = "sellgoodsid"),
+            @Result(property = "goodsname",column = "goodsname"),
+            @Result(property = "goodsprice",column = "goodsprice"),
+            @Result(property = "goodsaddress",column = "goodsaddress"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "takesstatus",column = "takesstatus"),
+            @Result(property = "selltime",column = "selltime"),
+            @Result(property = "goodstype",column = "goodstype"),
+            @Result(property = "nogotable",column = "nogotable"),
+            @Result(property = "baoyou",column = "baoyou"),
+            @Result(property = "goodsdesc",column = "goodsdesc"),
+            @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "allimageaddress",column = "sellgoodsid",
+                    one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
+    })
+    List<GoodsPojo> getStudyGoods(String type);
 }

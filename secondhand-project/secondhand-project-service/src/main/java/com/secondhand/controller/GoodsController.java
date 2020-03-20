@@ -46,6 +46,17 @@ public class GoodsController {
         List<ImagePojo> indexLunboImage = this.goodsService.getIndexLunboImage();
         return ResponseEntity.ok(indexLunboImage);
     }
+
+    /**
+     * 获取学习类型的商品
+     * @return
+     */
+    @GetMapping("typegoods")
+    public ResponseEntity<List<GoodsPojo>> getStudyGoods(@RequestParam("type")String type){
+           List<GoodsPojo> goods = this.goodsService.getStudyGoods(type);
+           return ResponseEntity.ok(goods);
+    }
+
     /**
      * 出售闲置物品的基本信息
      * @return
@@ -189,6 +200,12 @@ public class GoodsController {
         return ResponseEntity.ok(address);
     }
 
+    /**
+     * 修改商品状态
+     * @param status
+     * @param goodsid
+     * @return
+     */
     @GetMapping("changegoodsstatus")
     public ResponseEntity<Void> changeGoodsStatus(@RequestParam("status")Integer status, @RequestParam("goodsid")String goodsid){
         this.goodsService.changeGoodsStatus(status,goodsid);

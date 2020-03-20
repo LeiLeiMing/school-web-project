@@ -199,4 +199,14 @@ public class TransactionService {
         List<OrderPojo> orders = this.cartMapper.getToBeshippedOrder(id);
         return orders;
     }
+
+    public List<OrderPojo> getToBePaidOrder(String token) {
+        Map userInfo = this.cartClient.getUserInfo(token);
+        if (userInfo.isEmpty()){
+            return null;
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        return this.cartMapper.getToBePaidOrders(id);
+    }
 }

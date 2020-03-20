@@ -224,4 +224,8 @@ public class GoodsService {
     public void changeGoodsStatus(Integer status,String goodsid) {
         this.goodsMapper.changeGoodsStatus(status,goodsid);
     }
+
+    public List<GoodsPojo> getStudyGoods(String type) {
+        return this.goodsMapper.getStudyGoods(type);
+    }
 }

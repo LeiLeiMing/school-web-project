@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.secondhand.pojo.MessagePojo;
 import com.secondhand.pojo.OrderPojo;
 import com.secondhand.service.TransactionService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -66,10 +68,29 @@ public class TransactionController {
         return ResponseEntity.ok(null);
     }
 
+    /**
+     * 获取待发货订单
+     * @param token
+     * @return
+     */
     @GetMapping("getshippedorder")
     public ResponseEntity<List<OrderPojo>> getToBeshippedOrder(@RequestParam("token")String token){
         List<OrderPojo> toBeshippedOrder = this.transactionService.getToBeshippedOrder(token);
         return ResponseEntity.ok(toBeshippedOrder);
+    }
+
+    /**
+     * 待支付商品/订单
+     * @param token
+     * @return
+     */
+    @GetMapping("gettobepaidorder")
+    public ResponseEntity<List<OrderPojo>> getToBePaidOrder(@RequestParam("token")String token){
+        if (StringUtils.isBlank(token)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        List<OrderPojo> tobepaidorders = this.transactionService.getToBePaidOrder(token);
+        return ResponseEntity.ok(tobepaidorders);
     }
 
     /**
