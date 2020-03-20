@@ -10,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import tk.mybatis.mapper.annotation.Order;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,12 +87,20 @@ public class TransactionController {
      * @return
      */
     @GetMapping("gettobepaidorder")
-    public ResponseEntity<List<OrderPojo>> getToBePaidOrder(@RequestParam("token")String token){
+    public ResponseEntity<Map<String,List<OrderPojo>>> getToBePaidOrder(@RequestParam("token")String token){
         if (StringUtils.isBlank(token)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         List<OrderPojo> tobepaidorders = this.transactionService.getToBePaidOrder(token);
-        return ResponseEntity.ok(tobepaidorders);
+        //为了实现按订单编号分类，还需要根据订单编号遍历商品
+        ArrayList<String> ids = new ArrayList<>(tobepaidorders.size());
+        Map<String,List<OrderPojo>> map = new HashMap<>();
+        for (OrderPojo order:tobepaidorders){
+            List<OrderPojo> toBePaidOrderByOrderid = this.transactionService.getToBePaidOrderByOrderid(order.getOrderid());
+            map.put(order.getOrderid(),toBePaidOrderByOrderid);
+        }
+        //数组查询
+        return ResponseEntity.ok(map);
     }
 
     /**

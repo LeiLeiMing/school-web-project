@@ -15,6 +15,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -208,5 +209,9 @@ public class TransactionService {
         Map userinfo = (Map) userInfo.get("userinfo");
         String id = userinfo.get("id").toString();
         return this.cartMapper.getToBePaidOrders(id);
+    }
+
+    public List<OrderPojo> getToBePaidOrderByOrderid(String orderid) {
+        return this.cartMapper.getToBePaidOrderByOrderid(orderid);
     }
 }

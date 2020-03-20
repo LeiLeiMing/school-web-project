@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,8 +61,25 @@ public interface CartMapper extends Mapper<OrderPojo> {
             @Result(property = "orderleavemessage",column = "orderleavemessage"),
             @Result(property = "orderendtime",column = "orderendtime"),
             @Result(property = "orderaddress",column = "orderaddress"),
+    })
+    List<OrderPojo> getToBePaidOrders(String id);
+
+    @Select("select * from goodsorder where orderid = #{orderid}")
+    @Results(id = "TobepaidOrdersByOrderid", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "orderid",column = "orderid"),
+            @Result(property = "buyerid",column = "buyerid"),
+            @Result(property = "sellerid",column = "sellerid"),
+            @Result(property = "goodsid",column = "goodsid"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "allprice",column = "allprice"),
+            @Result(property = "orderstatus",column = "orderstatus"),
+            @Result(property = "ordertime",column = "ordertime"),
+            @Result(property = "orderleavemessage",column = "orderleavemessage"),
+            @Result(property = "orderendtime",column = "orderendtime"),
+            @Result(property = "orderaddress",column = "orderaddress"),
             @Result(property = "goodsPojo",column = "goodsid",
                     one = @One(select = "com.secondhand.mapper.GoodsMapper.getGoodsByGoodsid",fetchType = FetchType.DEFAULT)),
     })
-    List<OrderPojo> getToBePaidOrders(String id);
+    List<OrderPojo> getToBePaidOrderByOrderid(String orderid);
 }
