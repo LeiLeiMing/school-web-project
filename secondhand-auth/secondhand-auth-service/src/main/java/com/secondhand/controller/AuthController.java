@@ -89,4 +89,5 @@ public class AuthController extends KeyUrl {
         map.put("newtoken",newToken);
         return ResponseEntity.ok(map);
     }
+
 }
