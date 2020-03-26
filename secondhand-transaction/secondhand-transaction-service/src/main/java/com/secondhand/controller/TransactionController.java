@@ -1,6 +1,7 @@
 package com.secondhand.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.secondhand.client.CartClient;
 import com.secondhand.pojo.MessagePojo;
 import com.secondhand.pojo.OrderPojo;
 import com.secondhand.service.TransactionService;
@@ -25,6 +26,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("cart")
 public class TransactionController {
+
+    @Autowired
+    private CartClient cartClient;
 
     @Autowired
     private TransactionService transactionService;
@@ -77,7 +81,19 @@ public class TransactionController {
      */
     @GetMapping("getshippedorder")
     public ResponseEntity<List<OrderPojo>> getToBeshippedOrder(@RequestParam("token")String token){
-        List<OrderPojo> toBeshippedOrder = this.transactionService.getToBeshippedOrder(token);
+        Map userInfo = null;
+        try{
+            userInfo = this.cartClient.getUserInfo(token);
+            if (userInfo.isEmpty()){
+                //用户登录过期
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        List<OrderPojo> toBeshippedOrder = this.transactionService.getToBeshippedOrder(id);
         return ResponseEntity.ok(toBeshippedOrder);
     }
 
@@ -89,9 +105,21 @@ public class TransactionController {
     @GetMapping("gettobepaidorder")
     public ResponseEntity<Map<String,List<OrderPojo>>> getToBePaidOrder(@RequestParam("token")String token){
         if (StringUtils.isBlank(token)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        List<OrderPojo> tobepaidorders = this.transactionService.getToBePaidOrder(token);
+        Map userInfo = null;
+        try{
+            userInfo = this.cartClient.getUserInfo(token);
+            if (userInfo.isEmpty()){
+                //用户登录过期
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        List<OrderPojo> tobepaidorders = this.transactionService.getToBePaidOrder(id);
         //为了实现按订单编号分类，还需要根据订单编号遍历商品
         ArrayList<String> ids = new ArrayList<>(tobepaidorders.size());
         Map<String,List<OrderPojo>> map = new HashMap<>();

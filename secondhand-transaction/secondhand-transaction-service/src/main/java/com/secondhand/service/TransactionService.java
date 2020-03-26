@@ -189,25 +189,13 @@ public class TransactionService {
         this.goodsClient.changeGoodsStatus(status,goodsid);
     }
 
-    public List<OrderPojo> getToBeshippedOrder(String token) {
-        Map userInfo = this.cartClient.getUserInfo(token);
-        if (userInfo.isEmpty()){
-            return null;
-        }
-        Map userinfo = (Map) userInfo.get("userinfo");
-        String id = userinfo.get("id").toString();
+    public List<OrderPojo> getToBeshippedOrder(String id) {
         //查询
         List<OrderPojo> orders = this.cartMapper.getToBeshippedOrder(id);
         return orders;
     }
 
-    public List<OrderPojo> getToBePaidOrder(String token) {
-        Map userInfo = this.cartClient.getUserInfo(token);
-        if (userInfo.isEmpty()){
-            return null;
-        }
-        Map userinfo = (Map) userInfo.get("userinfo");
-        String id = userinfo.get("id").toString();
+    public List<OrderPojo> getToBePaidOrder(String id) {
         return this.cartMapper.getToBePaidOrders(id);
     }
 
