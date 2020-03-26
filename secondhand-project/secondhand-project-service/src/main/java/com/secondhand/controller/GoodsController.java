@@ -37,14 +37,13 @@ public class GoodsController {
     private AuthClient authClient;
 
     /**
-     * 首页轮播图
-     * ResponseEntutity需要一个集合来装ImagePojo
+     * 首页轮播
      * @return
      */
     @GetMapping("indexlunbo")
-    public ResponseEntity<List<ImagePojo>> getIndexLunBo(){
-        List<ImagePojo> indexLunboImage = this.goodsService.getIndexLunboImage();
-        return ResponseEntity.ok(indexLunboImage);
+    public ResponseEntity<List<GoodsPojo>> getIndexLunBo(){
+        List<GoodsPojo>  indexlunbo= this.goodsService.getIndexLunBoGoods();
+        return ResponseEntity.ok(indexlunbo);
     }
 
     /**
@@ -111,6 +110,15 @@ public class GoodsController {
     @GetMapping("newsellgoods")
     public ResponseEntity<List<GoodsPojo>> findNewSellGoods(){
         return ResponseEntity.ok(this.goodsService.findNewSellGoods());
+    }
+
+    /**
+     * 推荐商品，随机抽取十条商品进行推荐
+     * @return
+     */
+    @GetMapping("randgoods")
+    public ResponseEntity<List<GoodsPojo>> findRandGoods(){
+        return ResponseEntity.ok(this.goodsService.getRandGoods());
     }
 
     /**

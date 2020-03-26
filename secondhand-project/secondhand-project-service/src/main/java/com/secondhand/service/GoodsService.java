@@ -228,4 +228,12 @@ public class GoodsService {
     public List<GoodsPojo> getStudyGoods(String type) {
         return this.goodsMapper.getStudyGoods(type);
     }
+
+    public List<GoodsPojo> getRandGoods() {
+        return this.goodsMapper.getRandGoods();
+    }
+
+    public List<GoodsPojo> getIndexLunBoGoods() {
+        return this.goodsMapper.getIndexLunBo();
+    }
 }

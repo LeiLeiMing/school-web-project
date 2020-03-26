@@ -154,4 +154,47 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
                     one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
     })
     List<GoodsPojo> getStudyGoods(String type);
+
+
+    @Select("select * from commodity where 1 order by rand() limit 10")
+    @Results(id = "randgoods", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "userid",column = "userid"),
+            @Result(property = "sellgoodsid",column = "sellgoodsid"),
+            @Result(property = "goodsname",column = "goodsname"),
+            @Result(property = "goodsprice",column = "goodsprice"),
+            @Result(property = "goodsaddress",column = "goodsaddress"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "takesstatus",column = "takesstatus"),
+            @Result(property = "selltime",column = "selltime"),
+            @Result(property = "goodstype",column = "goodstype"),
+            @Result(property = "nogotable",column = "nogotable"),
+            @Result(property = "baoyou",column = "baoyou"),
+            @Result(property = "goodsdesc",column = "goodsdesc"),
+            @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "allimageaddress",column = "sellgoodsid",
+                    one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
+    })
+    List<GoodsPojo> getRandGoods();
+
+    @Select("select * from commodity where 1 order by rand() limit 3")
+    @Results(id = "indexlunbo", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "userid",column = "userid"),
+            @Result(property = "sellgoodsid",column = "sellgoodsid"),
+            @Result(property = "goodsname",column = "goodsname"),
+            @Result(property = "goodsprice",column = "goodsprice"),
+            @Result(property = "goodsaddress",column = "goodsaddress"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "takesstatus",column = "takesstatus"),
+            @Result(property = "selltime",column = "selltime"),
+            @Result(property = "goodstype",column = "goodstype"),
+            @Result(property = "nogotable",column = "nogotable"),
+            @Result(property = "baoyou",column = "baoyou"),
+            @Result(property = "goodsdesc",column = "goodsdesc"),
+            @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "allimageaddress",column = "sellgoodsid",
+                    one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
+    })
+    List<GoodsPojo> getIndexLunBo();
 }
