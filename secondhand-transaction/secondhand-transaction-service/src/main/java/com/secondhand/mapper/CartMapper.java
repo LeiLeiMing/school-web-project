@@ -82,4 +82,7 @@ public interface CartMapper extends Mapper<OrderPojo> {
                     one = @One(select = "com.secondhand.mapper.GoodsMapper.getGoodsByGoodsid",fetchType = FetchType.DEFAULT)),
     })
     List<OrderPojo> getToBePaidOrderByOrderid(String orderid);
+
+    @Delete("delete from goodsorder where orderstatus = 0 and buyerid = #{id} and orderid = #{orderid}")
+    void deltobepaidOrder(String id, String orderid);
 }

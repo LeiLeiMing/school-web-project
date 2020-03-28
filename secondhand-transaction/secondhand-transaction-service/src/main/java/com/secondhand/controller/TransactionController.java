@@ -132,6 +132,38 @@ public class TransactionController {
     }
 
     /**
+     * 删除待支付订单
+     * @param token
+     * @param orderid
+     * @return
+     */
+    @GetMapping("deltopaidorder")
+    public ResponseEntity<Void> deltobepaidOrder(@RequestParam("token")String token,@RequestParam("orderid")String orderid){
+        //获取用户id
+        if (StringUtils.isBlank(token)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userInfo = null;
+        try{
+            userInfo = this.cartClient.getUserInfo(token);
+            if (userInfo.isEmpty()){
+                //用户登录过期
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        try {
+            this.transactionService.deltobepaidOrder(id,orderid);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * 删除购物车商品
      * @param jsonParam
      * @param token
