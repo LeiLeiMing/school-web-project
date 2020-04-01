@@ -85,4 +85,22 @@ public interface CartMapper extends Mapper<OrderPojo> {
 
     @Delete("delete from goodsorder where orderstatus = 0 and buyerid = #{id} and orderid = #{orderid}")
     void deltobepaidOrder(String id, String orderid);
+
+
+    @Select("select * from goodsorder where orderstatus != 0 and buyerid = #{id}")
+    @Results(id = "getMyOrder", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "orderid",column = "orderid"),
+            @Result(property = "buyerid",column = "buyerid"),
+            @Result(property = "sellerid",column = "sellerid"),
+            @Result(property = "goodsid",column = "goodsid"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "allprice",column = "allprice"),
+            @Result(property = "orderstatus",column = "orderstatus"),
+            @Result(property = "ordertime",column = "ordertime"),
+            @Result(property = "orderleavemessage",column = "orderleavemessage"),
+            @Result(property = "orderendtime",column = "orderendtime"),
+            @Result(property = "orderaddress",column = "orderaddress"),
+    })
+    List<OrderPojo> getMyOrder(String id);
 }

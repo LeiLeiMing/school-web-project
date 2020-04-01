@@ -206,4 +206,8 @@ public class TransactionService {
     public void deltobepaidOrder(String id, String orderid) {
         this.cartMapper.deltobepaidOrder(id,orderid);
     }
+
+    public List<OrderPojo> getMyOrder(String id) {
+        return this.cartMapper.getMyOrder(id);
+    }
 }

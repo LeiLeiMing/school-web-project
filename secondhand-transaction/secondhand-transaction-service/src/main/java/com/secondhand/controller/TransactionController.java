@@ -74,6 +74,35 @@ public class TransactionController {
         return ResponseEntity.ok(null);
     }
 
+    @GetMapping("getmyorder")
+    public ResponseEntity<Map<String,List<OrderPojo>>> getMyOrder(@RequestParam("token")String token){
+        if (StringUtils.isBlank(token)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userInfo = null;
+        try{
+            userInfo = this.cartClient.getUserInfo(token);
+            if (userInfo.isEmpty()){
+                //用户登录过期
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        List<OrderPojo> tobepaidorders = this.transactionService.getMyOrder(id);
+        //为了实现按订单编号分类，还需要根据订单编号遍历商品
+        ArrayList<String> ids = new ArrayList<>(tobepaidorders.size());
+        Map<String,List<OrderPojo>> map = new HashMap<>();
+        for (OrderPojo order:tobepaidorders){
+            List<OrderPojo> toBePaidOrderByOrderid = this.transactionService.getToBePaidOrderByOrderid(order.getOrderid());
+            map.put(order.getOrderid(),toBePaidOrderByOrderid);
+        }
+        //数组查询
+        return ResponseEntity.ok(map);
+    }
+
     /**
      * 获取待发货订单
      * @param token
@@ -244,31 +273,6 @@ public class TransactionController {
         return  "redirect:http://localhost:3000/#/paysuccess";
     }
 
-    /**
-     * 处理支付宝网络原因无法反馈结果
-     * @param orderid
-     * @return
-     * @throws ParseException
-     */
-    @GetMapping("alipayresult")
-    public String alipayresult(@RequestParam("orderid")String orderid) throws ParseException {
-        //获取该用户id
-        List<OrderPojo> order = this.transactionService.getUserIdByOrder(orderid);
-        String id = order.get(0).getBuyerid();
-        //获取商品编号 并根据商品编号修改商品状态
-        for (int i = 0;i<order.size();i++){
-            String goodsid = order.get(i).getGoodsid();
-            this.transactionService.changeGoodsStatus(2,goodsid);
-        }
-        //清空该用户的购物车
-        this.transactionService.clearCartGoods(id);
-        //获取该订单的出售者id
-        List<String> sellerids = this.transactionService.getSellerByOrderid(orderid);
-        //将订单消息存入数据库通知卖家
-        for (int i = 0;i<sellerids.size();i++){
-            this.transactionService.addMessage(sellerids.get(i),orderid);
-        }
-        return  "redirect:http://localhost:3000/#/paysuccess";
-    }
+
 
 }

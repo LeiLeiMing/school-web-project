@@ -6,6 +6,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.secondhand.pojo.OrderPojo;
 import com.secondhand.utils.AlipayConfig;
 import com.secondhand.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -85,7 +87,7 @@ public class PayController {
      * @throws UnsupportedEncodingException
      * @throws AlipayApiException
      */
-    @GetMapping("query")
+    @GetMapping("/query")
     public ResponseEntity<Object> query(@RequestParam("orderid")String orderid) throws UnsupportedEncodingException, AlipayApiException {
 
         //获得初始化的AlipayClient
@@ -106,5 +108,31 @@ public class PayController {
         String result = alipayClient.execute(alipayRequest).getBody();
         Object o = JSONObject.toJSON(result);
         return ResponseEntity.ok(o);
+    }
+    /**
+     * 处理支付宝网络原因无法反馈结果
+     * @param orderid
+     * @return
+     * @throws ParseException
+     */
+    @GetMapping("alipayresult")
+    public String alipayresult(@RequestParam("orderid")String orderid) throws ParseException {
+        //获取该用户id
+        List<OrderPojo> order = this.transactionService.getUserIdByOrder(orderid);
+        String id = order.get(0).getBuyerid();
+        //获取商品编号 并根据商品编号修改商品状态
+        for (int i = 0;i<order.size();i++){
+            String goodsid = order.get(i).getGoodsid();
+            this.transactionService.changeGoodsStatus(2,goodsid);
+        }
+        //清空该用户的购物车
+        this.transactionService.clearCartGoods(id);
+        //获取该订单的出售者id
+        List<String> sellerids = this.transactionService.getSellerByOrderid(orderid);
+        //将订单消息存入数据库通知卖家
+        for (int i = 0;i<sellerids.size();i++){
+            this.transactionService.addMessage(sellerids.get(i),orderid);
+        }
+        return  "redirect:http://localhost:3000/#/paysuccess";
     }
 }
