@@ -29,6 +29,7 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
             @Result(property = "baoyou",column = "baoyou"),
             @Result(property = "goodsdesc",column = "goodsdesc"),
             @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "fresh",column = "fresh"),
             @Result(property = "imageaddress",column = "sellgoodsid",
                     one = @One(select = "com.secondhand.mapper.ImageMapper.findDisplayGoodsImage",fetchType = FetchType.DEFAULT)),
     })

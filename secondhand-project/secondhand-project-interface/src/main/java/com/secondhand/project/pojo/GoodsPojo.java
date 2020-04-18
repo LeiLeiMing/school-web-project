@@ -32,6 +32,15 @@ public class GoodsPojo {
     private Integer baoyou;//是否包邮
     private String goodsdesc;//商品描述
     private Integer clickmount; //商品点击次数
+    private String fresh; //商城崭新程度
+
+    public String getFresh() {
+        return fresh;
+    }
+
+    public void setFresh(String fresh) {
+        this.fresh = fresh;
+    }
 
     private ImagePojo imageaddress;  //用来展示的图片地址，只有一张，goodsid和该商品一致，首页图片状态为1
 

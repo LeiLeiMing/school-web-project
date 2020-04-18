@@ -123,6 +123,7 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
             @Result(property = "baoyou",column = "baoyou"),
             @Result(property = "goodsdesc",column = "goodsdesc"),
             @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "fresh",column = "fresh"),
             @Result(property = "allimageaddress",column = "sellgoodsid",
                     one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
     })
@@ -150,6 +151,7 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
             @Result(property = "baoyou",column = "baoyou"),
             @Result(property = "goodsdesc",column = "goodsdesc"),
             @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "fresh",column = "fresh"),
             @Result(property = "allimageaddress",column = "sellgoodsid",
                     one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
     })
@@ -172,6 +174,7 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
             @Result(property = "baoyou",column = "baoyou"),
             @Result(property = "goodsdesc",column = "goodsdesc"),
             @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "fresh",column = "fresh"),
             @Result(property = "allimageaddress",column = "sellgoodsid",
                     one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
     })
@@ -193,6 +196,7 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
             @Result(property = "baoyou",column = "baoyou"),
             @Result(property = "goodsdesc",column = "goodsdesc"),
             @Result(property = "clickmount",column = "clickmount"),
+            @Result(property = "fresh",column = "fresh"),
             @Result(property = "allimageaddress",column = "sellgoodsid",
                     one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
     })
