@@ -6,7 +6,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8080/eureka
+      defaultZone: http://116.62.125.141:8080/eureka
   server:
     enable-self-preservation: false
     eviction-interval-timer-in-ms: 10000
