@@ -97,9 +97,20 @@ public class GoodsController {
      * @return
      */
     @GetMapping("searchbykey")
-    public ResponseEntity<List<GoodsPojo>> searchbykey(@RequestParam("keyvalue")String keyvalue){
-        List<GoodsPojo> goods = goodsService.searchByKey(keyvalue);
-        return ResponseEntity.ok(goods);
+    public ResponseEntity<List<GoodsPojo>> searchbykey(
+            @RequestParam("keyvalue")String keyvalue,
+            @RequestParam("condition1")String condition1,
+            @RequestParam("condition2")String condition2,
+            @RequestParam("condition3")String condition3
+    ){
+        //无条件筛选
+        if (StringUtils.isBlank(condition1)&&StringUtils.isBlank(condition3)&&StringUtils.isBlank(condition3)){
+            List<GoodsPojo> goods = goodsService.searchByKey(keyvalue);
+            return ResponseEntity.ok(goods);
+        }
+        //有条件筛选
+        //List<GoodsPojo> goods = goodsService.searchByKey(keyvalue);
+        return null;
     }
 
     /**
