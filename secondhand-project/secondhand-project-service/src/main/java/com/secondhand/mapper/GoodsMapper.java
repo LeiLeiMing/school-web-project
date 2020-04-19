@@ -201,4 +201,7 @@ public interface GoodsMapper extends Mapper<GoodsPojo> {
                     one = @One(select = "com.secondhand.mapper.ImageMapper.findAllGoodsImage",fetchType = FetchType.DEFAULT)),
     })
     List<GoodsPojo> getIndexLunBo();
+
+    @Select("select * from commodity where goodsname like  CONCAT(CONCAT('%', #{keyvalue}), '%')")
+    List<GoodsPojo> searchByKey(String keyvalue);
 }

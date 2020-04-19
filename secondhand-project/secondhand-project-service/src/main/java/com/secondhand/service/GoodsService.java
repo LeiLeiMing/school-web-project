@@ -236,4 +236,8 @@ public class GoodsService {
     public List<GoodsPojo> getIndexLunBoGoods() {
         return this.goodsMapper.getIndexLunBo();
     }
+
+    public List<GoodsPojo> searchByKey(String keyvalue) {
+        return this.goodsMapper.searchByKey(keyvalue);
+    }
 }

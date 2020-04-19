@@ -92,6 +92,17 @@ public class GoodsController {
     }
 
     /**
+     * 根据关键词搜索商品
+     * @param keyvalue
+     * @return
+     */
+    @GetMapping("searchbykey")
+    public ResponseEntity<List<GoodsPojo>> searchbykey(@RequestParam("keyvalue")String keyvalue){
+        List<GoodsPojo> goods = goodsService.searchByKey(keyvalue);
+        return ResponseEntity.ok(goods);
+    }
+
+    /**
      * 单个商品的详情
      * @param sellgoodsid
      * @return
