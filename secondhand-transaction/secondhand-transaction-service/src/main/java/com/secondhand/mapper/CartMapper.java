@@ -103,4 +103,42 @@ public interface CartMapper extends Mapper<OrderPojo> {
             @Result(property = "orderaddress",column = "orderaddress"),
     })
     List<OrderPojo> getMyOrder(String id);
+
+    @Select("select * from goodsorder where orderstatus = 1 and buyerid = #{id}")
+    @Results(id = "gettobereceived", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "orderid",column = "orderid"),
+            @Result(property = "buyerid",column = "buyerid"),
+            @Result(property = "sellerid",column = "sellerid"),
+            @Result(property = "goodsid",column = "goodsid"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "allprice",column = "allprice"),
+            @Result(property = "orderstatus",column = "orderstatus"),
+            @Result(property = "ordertime",column = "ordertime"),
+            @Result(property = "orderleavemessage",column = "orderleavemessage"),
+            @Result(property = "orderendtime",column = "orderendtime"),
+            @Result(property = "orderaddress",column = "orderaddress"),
+            @Result(property = "goodsPojo",column = "goodsid",
+                    one = @One(select = "com.secondhand.mapper.GoodsMapper.getGoodsByGoodsid",fetchType = FetchType.DEFAULT)),
+    })
+    List<OrderPojo> getTobereceived(String id);
+
+    @Select("select * from goodsorder where orderstatus = 3 and buyerid = #{id}")
+    @Results(id = "gethadbuy", value = {
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "orderid",column = "orderid"),
+            @Result(property = "buyerid",column = "buyerid"),
+            @Result(property = "sellerid",column = "sellerid"),
+            @Result(property = "goodsid",column = "goodsid"),
+            @Result(property = "goodsmount",column = "goodsmount"),
+            @Result(property = "allprice",column = "allprice"),
+            @Result(property = "orderstatus",column = "orderstatus"),
+            @Result(property = "ordertime",column = "ordertime"),
+            @Result(property = "orderleavemessage",column = "orderleavemessage"),
+            @Result(property = "orderendtime",column = "orderendtime"),
+            @Result(property = "orderaddress",column = "orderaddress"),
+            @Result(property = "goodsPojo",column = "goodsid",
+                    one = @One(select = "com.secondhand.mapper.GoodsMapper.getGoodsByGoodsid",fetchType = FetchType.DEFAULT)),
+    })
+    List<OrderPojo> getHadBuy(String id);
 }

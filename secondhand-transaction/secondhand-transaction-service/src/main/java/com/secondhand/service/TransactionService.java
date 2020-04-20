@@ -210,4 +210,12 @@ public class TransactionService {
     public List<OrderPojo> getMyOrder(String id) {
         return this.cartMapper.getMyOrder(id);
     }
+
+    public List<OrderPojo> getTobereceived(String id) {
+        return this.cartMapper.getTobereceived(id);
+    }
+
+    public List<OrderPojo> getHadBuy(String id) {
+        return this.cartMapper.getHadBuy(id);
+    }
 }

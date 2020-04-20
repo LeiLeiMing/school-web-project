@@ -74,6 +74,11 @@ public class TransactionController {
         return ResponseEntity.ok(null);
     }
 
+    /**
+     * 我的订单
+     * @param token
+     * @return
+     */
     @GetMapping("getmyorder")
     public ResponseEntity<Map<String,List<OrderPojo>>> getMyOrder(@RequestParam("token")String token){
         if (StringUtils.isBlank(token)){
@@ -190,6 +195,57 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 待收货
+     * @param token
+     * @return
+     */
+    @GetMapping("gettobereceived")
+    public ResponseEntity<List<OrderPojo>> tobereceived(@RequestParam("token")String token){
+        //获取用户id
+        if (StringUtils.isBlank(token)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userInfo = null;
+        try{
+            userInfo = this.cartClient.getUserInfo(token);
+            if (userInfo.isEmpty()){
+                //用户登录过期
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        //获取待收货订单
+        List<OrderPojo> list = this.transactionService.getTobereceived(id);
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("gethadbuy")
+    public ResponseEntity<List<OrderPojo>> hadbuy(@RequestParam("token")String token){
+        //获取用户id
+        if (StringUtils.isBlank(token)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userInfo = null;
+        try{
+            userInfo = this.cartClient.getUserInfo(token);
+            if (userInfo.isEmpty()){
+                //用户登录过期
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        //获取待收货订单
+        List<OrderPojo> list = this.transactionService.getHadBuy(id);
+        return ResponseEntity.ok(list);
     }
 
     /**
