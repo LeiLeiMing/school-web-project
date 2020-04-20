@@ -240,4 +240,48 @@ public class GoodsService {
     public List<GoodsPojo> searchByKey(String keyvalue) {
         return this.goodsMapper.searchByKey(keyvalue);
     }
+
+    public List<GoodsPojo> searchBypriceDesc() {
+        return this.goodsMapper.searchByPriceDesc();
+    }
+
+    public List<GoodsPojo> getAllGoods() {
+        return this.goodsMapper.getAllGoods();
+    }
+
+    public List<GoodsPojo> searchBypriceAsc() {
+        return this.goodsMapper.searchBypriceAsc();
+    }
+
+    public List<GoodsPojo> searchByViewCount() {
+        return this.goodsMapper.searchByViewCount();
+    }
+
+    public List<GoodsPojo> searchByTimeDesc() {
+        return this.goodsMapper.searchByTimeDesc();
+    }
+
+    public List<GoodsPojo> searchByTimeAsc() {
+        return this.goodsMapper.searchBypriceAsc();
+    }
+
+    public List<GoodsPojo> searchByKeypriceDesc(String keyvalue) {
+        return this.goodsMapper.searchByKeypriceDesc(keyvalue);
+    }
+
+    public List<GoodsPojo> searchByKeypriceAsc(String keyvalue) {
+        return this.goodsMapper.searchByKeypriceAsc(keyvalue);
+    }
+
+    public List<GoodsPojo> searchByKeyViewCount(String keyvalue) {
+        return this.goodsMapper.searchByKeyViewCount(keyvalue);
+    }
+
+    public List<GoodsPojo> searchByKeyTimeDesc(String keyvalue) {
+        return this.goodsMapper.searchByKeyTimeDesc(keyvalue);
+    }
+
+    public List<GoodsPojo> searchByKeyTimeAsc(String keyvalue) {
+        return this.goodsMapper.searchByKeyTimeAsc(keyvalue);
+    }
 }

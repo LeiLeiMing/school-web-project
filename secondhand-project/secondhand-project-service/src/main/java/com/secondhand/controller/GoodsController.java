@@ -101,16 +101,43 @@ public class GoodsController {
             @RequestParam("keyvalue")String keyvalue,
             @RequestParam("condition1")String condition1,
             @RequestParam("condition2")String condition2,
-            @RequestParam("condition3")String condition3
-    ){
+            @RequestParam("condition3")String condition3){
         //无条件筛选
-        if (StringUtils.isBlank(condition1)&&StringUtils.isBlank(condition3)&&StringUtils.isBlank(condition3)){
-            List<GoodsPojo> goods = goodsService.searchByKey(keyvalue);
+        if (StringUtils.isBlank(condition1)&&StringUtils.isBlank(condition2)&&StringUtils.isBlank(condition3)){
+            List<GoodsPojo> goods =this.goodsService.searchByKey(keyvalue);
             return ResponseEntity.ok(goods);
         }
-        //有条件筛选
-        //List<GoodsPojo> goods = goodsService.searchByKey(keyvalue);
+        //默认筛选
+        if ("defaultprice".equals(condition1)&&"defaultsell".equals(condition2)&&"defaulttime".equals(condition3)){
+            List<GoodsPojo> goods = this.goodsService.searchByKey(keyvalue);
+            return ResponseEntity.ok(goods);
+        }
+        if ("pricedesc".equals(condition1)&&"defaultsell".equals(condition2)&&"defaulttime".equals(condition3)){
+            //价格降序
+            List<GoodsPojo> goods = this.goodsService.searchByKeypriceDesc(keyvalue);
+            return ResponseEntity.ok(goods);
+        }
+        if ("priceasc".equals(condition1)&&"defaultsell".equals(condition2)&&"defaulttime".equals(condition3)){
+            List<GoodsPojo> goods = this.goodsService.searchByKeypriceAsc(keyvalue);
+            return ResponseEntity.ok(goods);
+        }
+        //浏览最多
+        if("defaultprice".equals(condition1)&&"selldesc".equals(condition2)&&"defaulttime".equals(condition3)){
+            List<GoodsPojo> goods = this.goodsService.searchByKeyViewCount(keyvalue);
+            return ResponseEntity.ok(goods);
+        }
+        //时间排序
+        if ("defaultprice".equals(condition1)&&"defaultsell".equals(condition2)&&"timedesc".equals(condition3)){
+            List<GoodsPojo> goods = this.goodsService.searchByKeyTimeDesc(keyvalue);
+            return ResponseEntity.ok(goods);
+        }
+        if ("defaultprice".equals(condition1)&&"defaultsell".equals(condition2)&&"timeasc".equals(condition3)){
+            //时间升序
+            List<GoodsPojo> goods = this.goodsService.searchByKeyTimeAsc(keyvalue);
+            return ResponseEntity.ok(goods);
+        }
         return null;
+
     }
 
     /**
@@ -165,13 +192,55 @@ public class GoodsController {
 
     /**
      * 根据序列获取商品列商品
+     * 以及筛选功能
      * @return
      */
     @GetMapping("getgoodslimit")
-    public ResponseEntity<List<GoodsPojo>> getgoodslimit(@RequestParam("startpage")Integer startpage,@RequestParam("endpage")Integer endpage){
-        //1-1*5 1*5-5*2
-        List<GoodsPojo> goods = goodsService.getgoodsLimit(startpage, endpage);
-        return ResponseEntity.ok(goods);
+    public ResponseEntity<List<GoodsPojo>> getgoodslimit(
+            @RequestParam("startpage")Integer startpage,
+            @RequestParam("endpage")Integer endpage,
+            @RequestParam("condition1")String condition1,
+            @RequestParam("condition2")String condition2,
+            @RequestParam("condition3")String condition3){
+        //无条件筛选
+        if (StringUtils.isBlank(condition1)&&StringUtils.isBlank(condition3)&&StringUtils.isBlank(condition3)){
+            //1-1*5 1*5-5*2
+            List<GoodsPojo> goods = goodsService.getgoodsLimit(startpage, endpage);
+            return ResponseEntity.ok(goods);
+        }
+        //三个默认情况
+        if ("defaultprice".equals(condition1)&&"defaultsell".equals(condition2)&&"defaulttime".equals(condition3
+        )){
+            //1-1*5 1*5-5*2
+            List<GoodsPojo> goods = goodsService.getAllGoods();
+            return ResponseEntity.ok(goods);
+        }
+        //价格降序/升序 两默认
+        if ("pricedesc".equals(condition1)&&"defaultsell".equals(condition2)&&"defaulttime".equals(condition3)){
+            //价格降序
+            List<GoodsPojo> goods = this.goodsService.searchBypriceDesc();
+            return ResponseEntity.ok(goods);
+        }
+        if ("priceasc".equals(condition1)&&"defaultsell".equals(condition2)&&"defaulttime".equals(condition3)){
+            //价格升序
+            List<GoodsPojo> goods = this.goodsService.searchBypriceAsc();
+            return ResponseEntity.ok(goods);
+        }
+        //浏览最多 其他默认
+        if("defaultprice".equals(condition1)&&"selldesc".equals(condition2)&&"defaulttime".equals(condition3)){
+            List<GoodsPojo> goods = this.goodsService.searchByViewCount();
+            return ResponseEntity.ok(goods);
+        }
+        //时间排序 其他默认
+        if ("defaultprice".equals(condition1)&&"defaultsell".equals(condition2)&&"timedesc".equals(condition3)){
+            List<GoodsPojo> goods = this.goodsService.searchByTimeDesc();
+            return ResponseEntity.ok(goods);
+        }
+        if ("defaultprice".equals(condition1)&&"selldesc".equals(condition2)&&"timeasc".equals(condition3)){
+            List<GoodsPojo> goods = this.goodsService.searchByTimeAsc();
+            return ResponseEntity.ok(goods);
+        }
+        return null;
     }
 
     /**
