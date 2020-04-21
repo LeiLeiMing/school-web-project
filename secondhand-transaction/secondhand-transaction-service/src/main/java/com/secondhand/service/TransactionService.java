@@ -218,4 +218,16 @@ public class TransactionService {
     public List<OrderPojo> getHadBuy(String id) {
         return this.cartMapper.getHadBuy(id);
     }
+
+    public OrderPojo getToBeshippedOrderById(String id,String orderid) {
+        return this.cartMapper.getToBeshippedOrderById(id,orderid);
+    }
+
+    public void chnageOrderStatus(String goodsid) {
+        this.cartMapper.chnageOrderStatus(goodsid);
+    }
+
+    public List<OrderPojo> getShiped(String id) {
+        return this.cartMapper.getShiped(id);
+    }
 }

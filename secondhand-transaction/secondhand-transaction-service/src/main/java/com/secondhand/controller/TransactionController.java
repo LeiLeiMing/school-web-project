@@ -2,8 +2,10 @@ package com.secondhand.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.secondhand.client.CartClient;
+import com.secondhand.pojo.GoodSendPojo;
 import com.secondhand.pojo.MessagePojo;
 import com.secondhand.pojo.OrderPojo;
+import com.secondhand.service.GoodSendService;
 import com.secondhand.service.TransactionService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,7 @@ import tk.mybatis.mapper.annotation.Order;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by LeiMing on 2020/3/3 20:10
@@ -32,6 +31,9 @@ public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private GoodSendService goodSendService;
 
     /**
      * 将当前用户下的购物车数据存进redis
@@ -68,7 +70,7 @@ public class TransactionController {
      * @return
      */
     @PostMapping("generateorder")
-    public ResponseEntity<Void> generateorder(@RequestParam("token")String token, OrderPojo oreder){
+    public ResponseEntity<Void> generateorder(@RequestParam("token")String token, OrderPojo oreder,@RequestParam("addressid")String addressid){
         //将订单循环插入数据库
         this.transactionService.saveGoodsOrder(token,oreder);
         return ResponseEntity.ok(null);
@@ -129,6 +131,56 @@ public class TransactionController {
         String id = userinfo.get("id").toString();
         List<OrderPojo> toBeshippedOrder = this.transactionService.getToBeshippedOrder(id);
         return ResponseEntity.ok(toBeshippedOrder);
+    }
+
+    /**
+     * 获取待发货商品信息
+     * @param id
+     * @return
+     */
+    @GetMapping("getordergoodbyid")
+    public ResponseEntity<OrderPojo> getToBeshippedOrderById(@RequestParam("id")String id,@RequestParam("orderid")String orderid){
+        OrderPojo orderPojo = this.transactionService.getToBeshippedOrderById(id,orderid);
+        return ResponseEntity.ok(orderPojo);
+    }
+
+    /**
+     * 发货
+     * @return
+     */
+    @PostMapping("shippedorder")
+    public ResponseEntity shippedorder(GoodSendPojo goodSendPojo){
+        goodSendPojo.setSendtime(new Date());
+        boolean b = this.goodSendService.shippedorder(goodSendPojo);
+        if (b){
+            //变更的订单表状态
+            this.transactionService.chnageOrderStatus(goodSendPojo.getGoodsid());
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    /**
+     * 获取已发货商品
+     * @param token
+     * @return
+     */
+    @GetMapping("getshiped")
+    public ResponseEntity<List<OrderPojo>> getshiped(@RequestParam("token")String token){
+        Map userInfo = null;
+        try{
+            userInfo = this.cartClient.getUserInfo(token);
+            if (userInfo.isEmpty()){
+                //用户登录过期
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        List<OrderPojo> list = this.transactionService.getShiped(id);
+        return ResponseEntity.ok(list);
     }
 
     /**

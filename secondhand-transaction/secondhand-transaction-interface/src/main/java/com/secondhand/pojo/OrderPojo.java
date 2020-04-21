@@ -1,6 +1,8 @@
 package com.secondhand.pojo;
 
+import com.secondhand.Users;
 import com.secondhand.project.pojo.GoodsPojo;
+import com.secondhand.project.pojo.UserAddressPojo;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,8 +44,37 @@ public class OrderPojo {
 
     private String orderaddress;
 
+    private Integer addressid;
 
     private GoodsPojo goodsPojo;
+
+    private Users user;
+
+    private UserAddressPojo userAddressPojo;
+
+    public Integer getAddressid() {
+        return addressid;
+    }
+
+    public void setAddressid(Integer addressid) {
+        this.addressid = addressid;
+    }
+
+    public UserAddressPojo getUserAddressPojo() {
+        return userAddressPojo;
+    }
+
+    public void setUserAddressPojo(UserAddressPojo userAddressPojo) {
+        this.userAddressPojo = userAddressPojo;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
 
     public GoodsPojo getGoodsPojo() {
         return goodsPojo;
