@@ -284,4 +284,12 @@ public class GoodsService {
     public List<GoodsPojo> searchByKeyTimeAsc(String keyvalue) {
         return this.goodsMapper.searchByKeyTimeAsc(keyvalue);
     }
+
+    public void changeAddress(String id, UserAddressPojo useradddress) {
+        Example example = new Example(UserAddressPojo.class);
+        //条件查询:indexlunbo为1的数据
+        example.createCriteria()
+                .andEqualTo("userid",id);
+        this.addressMapper.updateByExample(useradddress,example);
+    }
 }

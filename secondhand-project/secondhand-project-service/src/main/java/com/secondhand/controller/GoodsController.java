@@ -300,6 +300,41 @@ public class GoodsController {
     }
 
     /**
+     * 修改收货地址
+     * @param token
+     * @param selectid
+     * @param username
+     * @param usertel
+     * @param useraddress
+     * @param userdateliaddress
+     * @return
+     */
+    @PostMapping("changeaddress")
+    public ResponseEntity<Void> changeaddress(
+            @RequestParam("token")String token,
+            @RequestParam("selectid")String selectid,
+            @RequestParam("username")String username,
+            @RequestParam("usertel")String usertel,
+            @RequestParam("useraddress")String useraddress,
+            @RequestParam("userdateliaddress")String userdateliaddress){
+        Map userInfo = this.authClient.getUserInfo(token);
+        if (userInfo.isEmpty()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Map userinfo = (Map) userInfo.get("userinfo");
+        String id = userinfo.get("id").toString();
+        UserAddressPojo useradddress = new UserAddressPojo();
+        useradddress.setSelectid(selectid);
+        useradddress.setUsername(username);
+        useradddress.setUsertel(usertel);
+        useradddress.setUseraddress(useraddress);
+        useradddress.setUserdateliaddress(userdateliaddress);
+        useradddress.setUserid(id);
+        this.goodsService.changeAddress(id,useradddress);
+        return ResponseEntity.ok(null);
+    }
+
+    /**
      * 修改商品状态
      * @param status
      * @param goodsid
