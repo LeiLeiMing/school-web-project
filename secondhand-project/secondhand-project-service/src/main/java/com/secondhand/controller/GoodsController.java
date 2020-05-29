@@ -191,23 +191,36 @@ public class GoodsController {
     }
 
     /**
+     * 首页下拉查询
+     * @param startpage
+     * @param endpage
+     * @return
+     */
+    @GetMapping("getlimitgoods_index")
+    public ResponseEntity<List<GoodsPojo>> getlimitgoods_index(
+            @RequestParam("startpage")Integer startpage,
+            @RequestParam("endpage")Integer endpage
+    ){
+        List<GoodsPojo> goods = goodsService.getgoodsLimit(startpage, endpage);
+        return ResponseEntity.ok(goods);
+    }
+
+    /**
      * 根据序列获取商品列商品
      * 以及筛选功能
      * @return
      */
     @GetMapping("getgoodslimit")
     public ResponseEntity<List<GoodsPojo>> getgoodslimit(
-            @RequestParam("startpage")Integer startpage,
-            @RequestParam("endpage")Integer endpage,
             @RequestParam("condition1")String condition1,
             @RequestParam("condition2")String condition2,
             @RequestParam("condition3")String condition3){
         //无条件筛选
-        if (StringUtils.isBlank(condition1)&&StringUtils.isBlank(condition3)&&StringUtils.isBlank(condition3)){
-            //1-1*5 1*5-5*2
-            List<GoodsPojo> goods = goodsService.getgoodsLimit(startpage, endpage);
-            return ResponseEntity.ok(goods);
-        }
+//        if (StringUtils.isBlank(condition1)&&StringUtils.isBlank(condition3)&&StringUtils.isBlank(condition3)){
+//            //1-1*5 1*5-5*2
+//            List<GoodsPojo> goods = goodsService.getgoodsLimit(startpage, endpage);
+//            return ResponseEntity.ok(goods);
+//        }
         //三个默认情况
         if ("defaultprice".equals(condition1)&&"defaultsell".equals(condition2)&&"defaulttime".equals(condition3
         )){
